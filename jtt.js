@@ -119,15 +119,3 @@ var JTT = function () {
 
 
 JTT.runSelfTests();
-
-var myTestSuite = {
-    testFunction: function () {
-        JTT.assertEqual(1, 1);
-    },
-    helperFunction: function () {
-        // should not run
-        JTT.assertEqual(2, 1);
-    }
-};
-
-JTT.runTestSuite(myTestSuite);
