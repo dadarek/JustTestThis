@@ -5,6 +5,7 @@ var JTT = function () {
     },
     passes = 0,
     fails = 0,
+    testsRun = 0,
     pass = function () {
         passes++;
     },
@@ -12,6 +13,7 @@ var JTT = function () {
         fails++;
     },
     testPassFail = function () {
+
         fail();
         fail();
 
@@ -21,21 +23,7 @@ var JTT = function () {
         assertEqual(2, fails);
         assertEqual(2, passes);
     },
-    isTestFunction = function (element, obj) {
-        var beginsWithTest = element.substring(0, 4) === 'test';
-        var isFunction = typeof (obj[element]) === 'function';
-        return beginsWithTest && isFunction;
-    },
-    runTestSuite = function (testSuite) {
-        for (element in testSuite) {
-            if (isTestFunction(element, testSuite)) {
-                testSuite[element]();
-            }
-        }
-    },
-    runSelfTests = function () {
-        testPassFail();
-
+    testRunSuite = function () {
         var testARun = false;
         var someFunctionRun = false;
 
@@ -52,7 +40,22 @@ var JTT = function () {
         runTestSuite(testSuite);
         assertEqual(true, testARun);
         assertEqual(false, someFunctionRun);
-
+    },
+    isTestFunction = function (element, obj) {
+        var beginsWithTest = element.substring(0, 4) === 'test';
+        var isFunction = typeof (obj[element]) === 'function';
+        return beginsWithTest && isFunction;
+    },
+    runTestSuite = function (testSuite) {
+        for (element in testSuite) {
+            if (isTestFunction(element, testSuite)) {
+                testSuite[element]();
+            }
+        }
+    },
+    runSelfTests = function () {
+        testPassFail();
+        testRunSuite();
     };
 
     return {
