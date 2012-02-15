@@ -3,8 +3,8 @@ var JTT = function () {
         if (expected !== actual)
             throw new Error();
     },
-    passes = 0,
-    fails = 0,
+    testsPassed = 0,
+    testsFailed = 0,
     testsRun = 0,
     isTestFunction = function (element, obj) {
         var beginsWithTest = element.substring(0, 4) === 'test';
@@ -14,15 +14,15 @@ var JTT = function () {
     runSingleTest = function (test) {
         try {
             test();
-            passes++;
+            testsPassed++;
         } catch (e) {
-            fails++;
+            testsFailed++;
         }
         testsRun++;
     },
     resetCounters = function () {
-        passes = 0;
-        fails = 0;
+        testsPassed = 0;
+        testsFailed = 0;
         testsRun = 0;
     },
     runTestSuite = function (testSuite) {
@@ -34,8 +34,8 @@ var JTT = function () {
         }
     },
     assertPassesAndFails = function (expectedPasses, expectedFails) {
-        assertEqual(expectedPasses, passes);
-        assertEqual(expectedFails, fails);
+        assertEqual(expectedPasses, testsPassed);
+        assertEqual(expectedFails, testsFailed);
     },
     testRunSingleTest = function () {
         resetCounters();
