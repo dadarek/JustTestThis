@@ -24,16 +24,18 @@ var JTT = function () {
         } catch (e) {
             fail();
         }
+        testsRun++;
     },
-    runTestSuite = function (testSuite) {
+    resetCounters = function () {
         passes = 0;
         fails = 0;
         testsRun = 0;
-
+    },
+    runTestSuite = function (testSuite) {
+        resetCounters();
         for (element in testSuite) {
             if (isTestFunction(element, testSuite)) {
-                testSuite[element]();
-                testsRun++;
+                runSingleTest(testSuite[element]);
             }
         }
     },
@@ -42,6 +44,8 @@ var JTT = function () {
         assertEqual(expectedFails, fails);
     },
     testRunSingleTest = function () {
+        resetCounters();
+
         var passingTest = function () { };
         runSingleTest(passingTest);
         assertPassesAndFails(1, 0);
@@ -87,7 +91,24 @@ var JTT = function () {
         assertEqual(true, testARun);
         assertEqual(false, someFunctionRun);
     },
-
+    testSuiteDoesNotThrowErrors = function () {
+        var testSuite = {
+            testFunctionThatThrows: function () { throw new Error(); }
+        };
+        runTestSuite(testSuite);
+    },
+    testSuiteCounters = function () {
+        var testSuite = {
+            testThatFailsA: function () { throw new Error(); },
+            testThatFailsB: function () { throw new Error(); },
+            testThatFailsC: function () { assertEqual(1, 0); },
+            testThatPassesA: function () { /* do nothing */ },
+            testThatPassesB: function () { assertEqual("hi", "hi"); }
+        };
+        runTestSuite(testSuite);
+        assertPassesAndFails(2, 3);
+        assertEqual(5, testsRun);
+    },
     testRunCount = function () {
         var testSuite = {
             testA: function () { },
@@ -105,6 +126,8 @@ var JTT = function () {
         testRunSuite();
         testRunCount();
         testRunSingleTest();
+        testSuiteDoesNotThrowErrors();
+        testSuiteCounters();
     };
 
     return {
