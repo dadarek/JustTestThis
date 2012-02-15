@@ -33,7 +33,7 @@ var JTT = function () {
             }
         }
     },
-    run = function () {
+    runSelfTests = function () {
         testPassFail();
 
         var testARun = false;
@@ -57,13 +57,13 @@ var JTT = function () {
 
     return {
         assertEqual: assertEqual,
-        run: run,
+        runSelfTests: runSelfTests,
         runTestSuite: runTestSuite
     };
 } ();
 
 
-JTT.run();
+JTT.runSelfTests();
 
 var myTestSuite = {
     testFunction: function () {
