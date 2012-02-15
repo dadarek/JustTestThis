@@ -1,40 +1,40 @@
-var JTT = {
-    assertEqual: function (expected, actual) {
+var JTT = function () {
+    var assertEqual = function (expected, actual) {
         if (expected !== actual)
             throw new Error();
     },
-    passes: 0,
-    fails: 0,
-    pass: function () {
-        this.passes++;
+    passes = 0,
+    fails = 0,
+    pass = function () {
+        passes++;
     },
-    fail: function () {
-        this.fails++;
+    fail = function () {
+        fails++;
     },
-    testPassFail: function () {
-        this.fail();
-        this.fail();
+    testPassFail = function () {
+        fail();
+        fail();
 
-        this.pass();
-        this.pass();
+        pass();
+        pass();
 
-        this.assertEqual(2, this.fails);
-        this.assertEqual(2, this.passes);
+        assertEqual(2, fails);
+        assertEqual(2, passes);
     },
-    isTestFunction: function (element, obj) {
+    isTestFunction = function (element, obj) {
         var beginsWithTest = element.substring(0, 4) === 'test';
         var isFunction = typeof (obj[element]) === 'function';
         return beginsWithTest && isFunction;
     },
-    runTestSuite: function (testSuite) {
+    runTestSuite = function (testSuite) {
         for (element in testSuite) {
-            if (this.isTestFunction(element, testSuite)) {
+            if (isTestFunction(element, testSuite)) {
                 testSuite[element]();
             }
         }
     },
-    run: function () {
-        this.testPassFail();
+    run = function () {
+        testPassFail();
 
         var testARun = false;
         var someFunctionRun = false;
@@ -49,12 +49,18 @@ var JTT = {
                 someFunctionRun = true;
             }
         };
-        this.runTestSuite(testSuite);
-        this.assertEqual(true, testARun);
-        this.assertEqual(false, someFunctionRun);
+        runTestSuite(testSuite);
+        assertEqual(true, testARun);
+        assertEqual(false, someFunctionRun);
 
-    }
-};
+    };
+
+    return {
+        assertEqual: assertEqual,
+        run: run,
+        runTestSuite: runTestSuite
+    };
+} ();
 
 
 JTT.run();
