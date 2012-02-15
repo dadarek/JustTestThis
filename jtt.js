@@ -1,5 +1,5 @@
 var JTT = {
-    assert: function (expected, actual) {
+    assertEqual: function (expected, actual) {
         if (expected !== actual)
             throw new Error();
     },
@@ -18,8 +18,8 @@ var JTT = {
         this.pass();
         this.pass();
 
-        this.assert(2, this.fails);
-        this.assert(2, this.passes);
+        this.assertEqual(2, this.fails);
+        this.assertEqual(2, this.passes);
     },
     isTestFunction: function (element, obj) {
         var beginsWithTest = element.substring(0, 4) === 'test';
@@ -50,8 +50,8 @@ var JTT = {
             }
         };
         this.runTestSuite(testSuite);
-        this.assert(true, testARun);
-        this.assert(false, someFunctionRun);
+        this.assertEqual(true, testARun);
+        this.assertEqual(false, someFunctionRun);
 
     }
 };
@@ -61,11 +61,11 @@ JTT.run();
 
 var myTestSuite = {
     testFunction: function () {
-        JTT.assert(1, 1);
+        JTT.assertEqual(1, 1);
     },
     helperFunction: function () {
         // should not run
-        JTT.assert(2, 1);
+        JTT.assertEqual(2, 1);
     }
 };
 
