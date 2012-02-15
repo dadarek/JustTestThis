@@ -17,6 +17,14 @@ var JTT = function () {
         var isFunction = typeof (obj[element]) === 'function';
         return beginsWithTest && isFunction;
     },
+    runSingleTest = function (test) {
+        try {
+            test();
+            pass();
+        } catch (e) {
+            fail();
+        }
+    },
     runTestSuite = function (testSuite) {
         passes = 0;
         fails = 0;
@@ -28,6 +36,24 @@ var JTT = function () {
                 testsRun++;
             }
         }
+    },
+
+    testRunSingleTest = function () {
+        var passingTest = function () { };
+        runSingleTest(passingTest);
+        assertEqual(1, passes);
+        assertEqual(0, fails);
+
+        runSingleTest(passingTest);
+        assertEqual(2, passes);
+        assertEqual(0, fails);
+
+        var failingTest = function () { assertEqual(0, 1); };
+        runSingleTest(failingTest);
+        assertEqual(1, fails);
+
+        runSingleTest(failingTest);
+        assertEqual(2, fails);
     },
     testPassFail = function () {
 
@@ -75,6 +101,7 @@ var JTT = function () {
         testPassFail();
         testRunSuite();
         testRunCount();
+        testRunSingleTest();
     };
 
     return {
