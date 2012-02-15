@@ -6,12 +6,6 @@ var JTT = function () {
     passes = 0,
     fails = 0,
     testsRun = 0,
-    pass = function () {
-        passes++;
-    },
-    fail = function () {
-        fails++;
-    },
     isTestFunction = function (element, obj) {
         var beginsWithTest = element.substring(0, 4) === 'test';
         var isFunction = typeof (obj[element]) === 'function';
@@ -20,9 +14,9 @@ var JTT = function () {
     runSingleTest = function (test) {
         try {
             test();
-            pass();
+            passes++;
         } catch (e) {
-            fail();
+            fails++;
         }
         testsRun++;
     },
@@ -58,19 +52,6 @@ var JTT = function () {
         assertPassesAndFails(2, 1);
 
         runSingleTest(failingTest);
-        assertPassesAndFails(2, 2);
-    },
-    testPassFail = function () {
-        assertPassesAndFails(0, 0);
-
-        fail();
-        assertPassesAndFails(0, 1);
-        fail();
-        assertPassesAndFails(0, 2);
-
-        pass();
-        assertPassesAndFails(1, 2);
-        pass();
         assertPassesAndFails(2, 2);
     },
     testRunSuite = function () {
@@ -122,7 +103,6 @@ var JTT = function () {
         assertEqual(2, testsRun);
     },
     runSelfTests = function () {
-        testPassFail();
         testRunSuite();
         testRunCount();
         testRunSingleTest();
