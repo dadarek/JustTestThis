@@ -37,34 +37,37 @@ var JTT = function () {
             }
         }
     },
-
+    assertPassesAndFails = function (expectedPasses, expectedFails) {
+        assertEqual(expectedPasses, passes);
+        assertEqual(expectedFails, fails);
+    },
     testRunSingleTest = function () {
         var passingTest = function () { };
         runSingleTest(passingTest);
-        assertEqual(1, passes);
-        assertEqual(0, fails);
+        assertPassesAndFails(1, 0);
 
         runSingleTest(passingTest);
-        assertEqual(2, passes);
-        assertEqual(0, fails);
+        assertPassesAndFails(2, 0);
 
         var failingTest = function () { assertEqual(0, 1); };
         runSingleTest(failingTest);
-        assertEqual(1, fails);
+        assertPassesAndFails(2, 1);
 
         runSingleTest(failingTest);
-        assertEqual(2, fails);
+        assertPassesAndFails(2, 2);
     },
     testPassFail = function () {
+        assertPassesAndFails(0, 0);
 
         fail();
+        assertPassesAndFails(0, 1);
         fail();
+        assertPassesAndFails(0, 2);
 
         pass();
+        assertPassesAndFails(1, 2);
         pass();
-
-        assertEqual(2, fails);
-        assertEqual(2, passes);
+        assertPassesAndFails(2, 2);
     },
     testRunSuite = function () {
         var testARun = false;
